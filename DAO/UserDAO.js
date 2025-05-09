@@ -1,6 +1,15 @@
 const User = require("../models/user");
 
 class UserDAO {
+  constructor() {
+    // Ensure this constructor is only used once
+    if (UserDAO.instance) {
+      return UserDAO.instance;
+    }
+
+    UserDAO.instance = this;
+  }
+
   async save(user) {
     try {
       return await user.save();
@@ -20,6 +29,7 @@ class UserDAO {
       throw err;
     }
   }
+
   async findById(id) {
     try {
       return await User.findById(id);
@@ -27,6 +37,22 @@ class UserDAO {
       throw err;
     }
   }
+
+  async findByIdAndUpdate(id, updatedData) {
+    try {
+      return await User.findByIdAndUpdate(id, updatedData, {
+        new: true,
+        runValidators: true,
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
-module.exports = new UserDAO();
+// Create and freeze the singleton instance
+const instance = new UserDAO();
+Object.freeze(instance);
+
+// Export the singleton instance
+module.exports = instance;

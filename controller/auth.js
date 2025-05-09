@@ -1,12 +1,22 @@
 const UserDAO = require("../DAO/UserDAO");
-const UserFactory = require("../factories/UserFactory");
+const UserPrototype = require("../patterns/prototype/userPrototype");
 const { generateAccessToken } = require("../utils/utils");
 
 module.exports.signUp = async (req, res) => {
   try {
-    // Consistent body access
-    const newUser = await UserFactory.createUser(req.body);
-    await UserDAO.save(newUser);
+    // Using UserPrototype to clone and customize user object
+    const clonedUser = await UserPrototype.clone(
+      req.body.fullName,
+      req.body.email,
+      req.body.password,
+      req.body.dateOfBirth,
+      req.body.phoneNumber,
+      req.body.nationalId,
+      req.body.role || "user" // Default to 'user' if no role is provided
+    );
+
+    // Save the new user to the database
+    await UserDAO.save(clonedUser);
 
     return res.status(201).json({ message: "Tạo tài khoản thành công" });
   } catch (err) {

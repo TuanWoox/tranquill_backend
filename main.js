@@ -6,6 +6,7 @@ const connectDB = require("./config/dbconnect");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 const cabinRoutes = require("./routes/cabin");
+const bookingRoutes = require("./routes/booking");
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
@@ -15,6 +16,7 @@ connectDB();
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/cabin", cabinRoutes);
+app.use("/booking", bookingRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
