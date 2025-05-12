@@ -32,7 +32,7 @@ class BookingDAO {
   async findBookingById(bookingId) {
     try {
       const bookingObjectId = new mongoose.Types.ObjectId(bookingId);
-      return Booking.findById(bookingObjectId);
+      return Booking.findById(bookingObjectId).populate("cabin");
     } catch (err) {
       throw err;
     }
@@ -45,7 +45,7 @@ class BookingDAO {
         bookingObjectId,
         { $set: updatedData },
         { new: true }
-      );
+      ).populate("cabin");
     } catch (err) {
       throw err;
     }

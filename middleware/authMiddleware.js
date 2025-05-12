@@ -16,3 +16,12 @@ module.exports.authenticateToken = (req, res, next) => {
     next();
   });
 };
+module.exports.isAdmin = (req, res, next) => {
+  const isAdmin = req.user.role === "admin";
+
+  if (isAdmin) {
+    return next(); // User is admin, proceed to next middleware
+  }
+  // User is not admin, deny access
+  return res.status(403).json({ message: "Cấm: Bạn không phải admin" });
+};

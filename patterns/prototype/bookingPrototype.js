@@ -1,6 +1,6 @@
-const Booking = require("./models/Booking"); // Import the Booking model
-const Cabin = require("./models/Cabin"); // Import the Cabin model (needed for reference)
-const User = require("./models/User"); // Import the User model (needed for reference)
+const Booking = require("../../models/booking"); // Import the Booking model
+const Cabin = require("../../models/cabin"); // Import the Cabin model (needed for reference)
+const User = require("../../models/user"); // Import the User model (needed for reference)
 
 class BookingPrototype {
   constructor() {

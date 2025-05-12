@@ -47,7 +47,8 @@ module.exports.logIn = async (req, res) => {
       user: {
         id: foundUser._id,
         email: foundUser.email,
-        name: foundUser.name,
+        fullName: foundUser.fullName,
+        role: foundUser.role,
       },
     });
   } catch (err) {
@@ -66,10 +67,16 @@ module.exports.validateJWT = async (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const foundUser = await UserDAO.findById(decoded.id);
 
     return res.status(200).json({
       message: "Token is valid",
-      user: decoded,
+      user: {
+        id: foundUser._id,
+        email: foundUser.email,
+        fullName: foundUser.fullName,
+        role: foundUser.role,
+      },
     });
   } catch (err) {
     return res.status(403).json({ message: "Invalid or expired token" });

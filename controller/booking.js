@@ -5,7 +5,7 @@ module.exports.getAllBookings = async function (req, res) {
 
   try {
     const bookings = await BookingDAO.findBookingByCustomerId(id);
-    return res.status(200).json({ bookings });
+    return res.status(200).json(bookings);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -24,7 +24,7 @@ module.exports.getOneBooking = async function (req, res) {
         .json({ message: "Booking not found or unauthorized" });
     }
 
-    return res.status(200).json({ foundBooking });
+    return res.status(200).json(foundBooking);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -44,7 +44,7 @@ module.exports.deleteBooking = async function (req, res) {
     }
 
     const deletedBooking = await BookingDAO.deleteBookingById(bookingId);
-    return res.status(200).json({ deletedBooking });
+    return res.status(200).json(deletedBooking);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -67,7 +67,7 @@ module.exports.updateBooking = async function (req, res) {
       updatedData
     );
 
-    return res.status(200).json({ updatedBooking });
+    return res.status(200).json(updatedBooking);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
