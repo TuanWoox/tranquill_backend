@@ -12,7 +12,7 @@ class BookingPrototype {
     this.cabinPrice = 100;
     this.extrasPrice = 0;
     this.totalPrice = 100;
-    this.status = "unconfirmed";
+    this.status = "confirmed";
     this.hasBreakfast = false;
     this.isPaid = false;
     this.observations = "";
@@ -43,7 +43,7 @@ class BookingPrototype {
       : this.cabinPrice;
     clonedBooking.totalPrice =
       clonedBooking.cabinPrice + clonedBooking.extrasPrice;
-    clonedBooking.status = "unconfirmed"; // Default status
+    clonedBooking.status = "confirmed"; // Default status
     clonedBooking.hasBreakfast = false; // Default breakfast option
     clonedBooking.isPaid = false; // Default payment status
     clonedBooking.observations = this.observations;

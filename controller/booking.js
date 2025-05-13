@@ -1,6 +1,6 @@
 const BookingDAO = require("../DAO/BookingDAO");
 const bookingPrototype = require("../patterns/prototype/bookingPrototype");
-const eachDayOfInterval = require("date-fns/eachDayOfInterval");
+const { eachDayOfInterval } = require("date-fns");
 
 module.exports.getAllBookings = async function (req, res) {
   const { id } = req.user;
@@ -77,7 +77,6 @@ module.exports.updateBooking = async function (req, res) {
 
 module.exports.getBookedDates = async function (req, res) {
   const { cabinId } = req.params;
-
   try {
     const booked = await BookingDAO.getBookedDatesByCabinId(cabinId);
     const bookedDates = booked

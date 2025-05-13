@@ -58,7 +58,7 @@ class BookingDAO {
       today.setHours(0, 0, 0, 0); // Set to beginning of the day
       const bookings = await Booking.find({
         cabin: id,
-        $or: [{ startDate: { $gte: today } }, { status: "checked-in" }],
+        status: "confirmed",
       });
       return bookings;
     } catch (err) {
