@@ -12,7 +12,8 @@ class UserDAO {
 
   async save(user) {
     try {
-      return await user.save();
+      const savedUser = new User(user);
+      return await savedUser.save();
     } catch (err) {
       if (err.code === 11000) {
         // Handle duplicate key errors (e.g., email already exists)

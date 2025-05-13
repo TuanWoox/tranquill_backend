@@ -50,6 +50,30 @@ class BookingDAO {
       throw err;
     }
   }
+
+  async getBookedDatesByCabinId(cabinId) {
+    try {
+      const id = new mongoose.Types.ObjectId(cabinId);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to beginning of the day
+      const bookings = await Booking.find({
+        cabin: id,
+        status: "confirmed",
+      });
+      return bookings;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async save(booking) {
+    try {
+      const newBooking = new Booking(booking);
+      return await newBooking.save();
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 // Create and freeze the singleton instance

@@ -1,4 +1,5 @@
 const User = require("../../models/user"); // Import the User model
+const bcrypt = require("bcrypt");
 
 class UserPrototype {
   constructor() {
