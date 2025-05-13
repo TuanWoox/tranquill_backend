@@ -1,5 +1,5 @@
 const Cabin = require("../../models/cabin"); // Import the Cabin model
-
+require("dotenv").config();
 class CabinPrototype {
   constructor() {
     // Default Cabin values

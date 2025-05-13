@@ -1,6 +1,7 @@
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
+const path = require("path");
 const app = express();
 const connectDB = require("./config/dbconnect");
 const authRoutes = require("./routes/auth");
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 connectDB();
+app.use("/public", express.static(path.join(__dirname, "public")));
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/cabin", cabinRoutes);

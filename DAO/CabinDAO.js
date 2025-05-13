@@ -9,11 +9,39 @@ class CabinDAO {
 
     CabinDAO.instance = this;
   }
+  async createCabin(cabinInstance) {
+    try {
+      const newCabin = new Cabin(cabinInstance);
+      return await newCabin.save();
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async getAllCabins() {
     try {
-      const cabins = Cabin.find({});
-      return cabins;
+      return Cabin.find({});
+    } catch (err) {
+      throw err;
+    }
+  }
+  async deleteCabinById(id) {
+    try {
+      return Cabin.findByIdAndDelete(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+  async duplicateCabinById(id) {
+    try {
+      const cabin = await Cabin.findById(id).lean();
+      if (!cabin) {
+        throw new Error("Cabin not found");
+      }
+      // Remove _id to let MongoDB assign a new one
+      delete cabin._id;
+      const newCabin = new Cabin(cabin);
+      return await newCabin.save();
     } catch (err) {
       throw err;
     }
