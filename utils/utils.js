@@ -9,3 +9,16 @@ module.exports.generateAccessToken = function (user) {
   );
   return token;
 };
+
+module.exports.generateOTPToken = (email) => {
+  const OTPToken = jwt.sign(
+    {
+      email: email,
+    },
+    process.env.JWT_OTP_SECRET_KEY,
+    {
+      expiresIn: "1m",
+    }
+  );
+  return OTPToken;
+};
