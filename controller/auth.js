@@ -56,6 +56,21 @@ module.exports.logIn = async (req, res) => {
 };
 const jwt = require("jsonwebtoken");
 
+module.exports.identityVerification = async (req, res) => {
+  const { email } = req.body;
+  if (!email)
+    return res.status(400).json({ message: "Thiếu thông tin cần thiết" });
+
+  try {
+    const user = await UserDAO.findByEmail(email);
+    
+    if (user) return res.status(200).json({ message: "Xác thực thành công" });
+    return res.status(404).json({ message: "Không tìm thấy người dùng" });
+  } catch {
+    return res.status(500).json({ message: "Lỗi máy chủ nội bộ" });
+  }
+};
+
 module.exports.validateJWT = async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {

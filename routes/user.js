@@ -8,5 +8,10 @@ router
 router
   .route("/updateProfile")
   .put(authMiddleware.authenticateToken, userController.updateProfile);
+router
+  .route("/resetPassword")
+  .post(
+    userController.resetPassword
+  );
 
 module.exports = router;
