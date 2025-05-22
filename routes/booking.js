@@ -7,11 +7,11 @@ router
   .get(authMiddleware.authenticateToken, bookingController.getAllBookings);
 router
   .route("/deleteBooking")
-  .post(authMiddleware.authenticateToken, bookingController.deleteBooking);
+  .delete(authMiddleware.authenticateToken, bookingController.deleteBooking);
 
 router
   .route("/getOneBooking")
-  .post(authMiddleware.authenticateToken, bookingController.getOneBooking);
+  .get(authMiddleware.authenticateToken, bookingController.getOneBooking);
 
 router
   .route("/updateBooking")

@@ -15,7 +15,7 @@ module.exports.getAllBookings = async function (req, res) {
 
 module.exports.getOneBooking = async function (req, res) {
   const { id } = req.user;
-  const { bookingId } = req.body;
+  const { bookingId } = req.query;
 
   try {
     const foundBooking = await BookingDAO.findBookingById(bookingId);
@@ -34,8 +34,7 @@ module.exports.getOneBooking = async function (req, res) {
 
 module.exports.deleteBooking = async function (req, res) {
   const { id } = req.user;
-  const { _id: bookingId } = req.body;
-
+  const { id: bookingId } = req.body;
   try {
     const booking = await BookingDAO.findBookingById(bookingId);
 
@@ -62,6 +61,11 @@ module.exports.updateBooking = async function (req, res) {
       return res
         .status(404)
         .json({ message: "Booking not found or unauthorized" });
+    }
+    if (new Date(booking.startDate) <= new Date()) {
+      return res.status(400).json({
+        message: "Start date has passed, you cannot update this booking.",
+      });
     }
 
     const updatedBooking = await BookingDAO.updateBookingById(
@@ -99,15 +103,15 @@ module.exports.createBooking = async function (req, res) {
     const clonedBooking = await bookingPrototype.clone(
       req.body.startDate,
       req.body.endDate,
-      req.body.numNights,
       req.body.numGuests,
-      req.body.cabinId,
+      req.body.cabinPrice,
+      req.body.extrasPrice,
+      req.body.hasBreakfast,
+      req.body.observations,
       id,
-      req.body.extrasPrice || 0
+      req.body.cabin
     );
-
     const savedBooking = await BookingDAO.save(clonedBooking);
-
     return res
       .status(201)
       .json({ message: "Booking Successfully" }, savedBooking);
