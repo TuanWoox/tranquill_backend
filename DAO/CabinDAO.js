@@ -25,6 +25,23 @@ class CabinDAO {
       throw err;
     }
   }
+  async getOneCabinById(cabinId) {
+    try {
+      return Cabin.findById(cabinId);
+    } catch (err) {
+      throw err;
+    }
+  }
+  async updateCabinById(updatedData, id) {
+    try {
+      return await Cabin.findByIdAndUpdate(id, updatedData, {
+        new: true,
+        runValidators: true,
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
   async deleteCabinById(id) {
     try {
       return Cabin.findByIdAndDelete(id);
@@ -42,6 +59,13 @@ class CabinDAO {
       delete cabin._id;
       const newCabin = new Cabin(cabin);
       return await newCabin.save();
+    } catch (err) {
+      throw err;
+    }
+  }
+  async save(cabinInstance) {
+    try {
+      return await cabinInstance.save();
     } catch (err) {
       throw err;
     }

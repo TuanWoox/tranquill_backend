@@ -4,6 +4,7 @@ const upload = require("../config/multer");
 const cabinController = require("../controller/cabin");
 const authMiddleware = require("../middleware/authMiddleware");
 router.route("/getAllCabins").get(cabinController.getAllCabins);
+router.route("/getOneCabin").get(cabinController.getOneCabin);
 router
   .route("/deleteCabin")
   .delete(
@@ -19,11 +20,20 @@ router
     upload.single("image"),
     cabinController.createCabin
   );
-router.route("/duplicateCabin").post(
-  authMiddleware.authenticateToken,
-  authMiddleware.isAdmin,
-
-  cabinController.duplicateCabin
-);
+router
+  .route("/updateCabin")
+  .put(
+    authMiddleware.authenticateToken,
+    authMiddleware.isAdmin,
+    upload.single("image"),
+    cabinController.updateCabin
+  );
+router
+  .route("/duplicateCabin")
+  .post(
+    authMiddleware.authenticateToken,
+    authMiddleware.isAdmin,
+    cabinController.duplicateCabin
+  );
 
 module.exports = router;
