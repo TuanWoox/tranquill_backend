@@ -13,5 +13,7 @@ router
   .post(
     userController.resetPassword
   );
-
+router
+  .route("/changePassword")
+  .post(authMiddleware.authenticateToken, userController.changePassword);
 module.exports = router;
