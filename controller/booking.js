@@ -20,13 +20,25 @@ module.exports.getOneBooking = async function (req, res) {
   try {
     const foundBooking = await BookingDAO.findBookingById(bookingId);
 
-    if (!foundBooking || foundBooking.user.toString() !== id) {
+    if (
+      !foundBooking ||
+      (req.user.role !== "admin" && foundBooking.user._id.toString() !== id)
+    ) {
       return res
         .status(404)
         .json({ message: "Booking not found or unauthorized" });
     }
 
     return res.status(200).json(foundBooking);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports.getBookingsWithCabinId = async (req, res) => {
+  try {
+    const bookings = await BookingDAO.findBookingByCabinId(req.query.cabinId);
+    return res.status(200).json(bookings);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -54,10 +66,14 @@ module.exports.deleteBooking = async function (req, res) {
 module.exports.updateBooking = async function (req, res) {
   const { id } = req.user;
   const { bookingId, ...updatedData } = req.body.data;
+
   try {
     const booking = await BookingDAO.findBookingById(bookingId);
 
-    if (!booking || booking.user.toString() !== id) {
+    if (
+      !booking ||
+      (req.user.role !== "admin" && booking.user.toString() !== id)
+    ) {
       return res
         .status(404)
         .json({ message: "Booking not found or unauthorized" });
@@ -112,9 +128,10 @@ module.exports.createBooking = async function (req, res) {
       req.body.cabin
     );
     const savedBooking = await BookingDAO.save(clonedBooking);
+
     return res
       .status(201)
-      .json({ message: "Booking Successfully" }, savedBooking);
+      .json({ message: "Booking Successfully", savedBooking });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
