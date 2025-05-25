@@ -87,7 +87,7 @@ class BookingDAO {
       const newBooking = new Booking(booking);
       return await newBooking.save();
     } catch (err) {
-      throw err;
+      throw new Error(`Error creating booking in DAO: ${error.message}`);
     }
   }
 }

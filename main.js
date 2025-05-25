@@ -10,6 +10,7 @@ const cabinRoutes = require("./routes/cabin");
 const bookingRoutes = require("./routes/booking");
 const settingRoutes = require("./routes/setting");
 const otpRoutes = require("./routes/otp");
+const rateRoutes = require("./routes/rate");
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
@@ -23,6 +24,7 @@ app.use("/cabin", cabinRoutes);
 app.use("/booking", bookingRoutes);
 app.use("/setting", settingRoutes);
 app.use("/otp", otpRoutes);
+app.use("/rating", rateRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
