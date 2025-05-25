@@ -5,15 +5,15 @@ class CreateCabinHandler extends BaseHandler {
   async execute(req, res) {
     const { name, maxCapacity, regularPrice, discount, description } = req.body;
     const image = req.file ? req.file.filename : "";
-
-    const newCabin = CabinPrototype.clone(
+    const raw = cabinPrototype.clone();
+    const newCabin = CabinPrototype.customize(raw, {
       name,
       maxCapacity,
       regularPrice,
       discount,
       description,
-      image
-    );
+      image,
+    });
 
     return await CabinDAO.createCabin(newCabin);
   }

@@ -4,15 +4,16 @@ const UserPrototype = require("../../prototype/userPrototype");
 
 class SignUpHandler extends BaseHandler {
   async execute(req, res) {
-    const clonedUser = await UserPrototype.clone(
-      req.body.fullName,
-      req.body.email,
-      req.body.password,
-      req.body.dateOfBirth,
-      req.body.phoneNumber,
-      req.body.nationalId,
-      req.body.role || "user"
-    );
+    const raw = UserPrototype.clone();
+    const clonedUser = await UserPrototype.customize(raw, {
+      fullName: req.body.fullName,
+      email: req.body.email,
+      password: req.body.password,
+      dateOfBirth: req.body.dateOfBirth,
+      phoneNumber: req.body.phoneNumber,
+      nationalId: req.body.nationalId,
+      role: req.body.role || "user",
+    });
 
     await UserDAO.save(clonedUser);
     return { message: "Tạo tài khoản thành công" };

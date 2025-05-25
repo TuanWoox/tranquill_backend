@@ -5,17 +5,18 @@ const bookingPrototype = require("../../prototype/bookingPrototype");
 class CreateBookingHandler extends BaseHandler {
   async execute(req, res) {
     const { id } = req.user;
-    const clonedBooking = await bookingPrototype.clone(
-      req.body.startDate,
-      req.body.endDate,
-      req.body.numGuests,
-      req.body.cabinPrice,
-      req.body.extrasPrice,
-      req.body.hasBreakfast,
-      req.body.observations,
-      id,
-      req.body.cabin
-    );
+    const raw = bookingPrototype.clone();
+    const clonedBooking = await bookingPrototype.customize(raw, {
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      numGuests: req.body.numGuests,
+      cabinPrice: req.body.cabinPrice,
+      extrasPrice: req.body.extrasPrice,
+      hasBreakfast: req.body.hasBreakfast,
+      observations: req.body.observations,
+      userId: id,
+      cabinId: req.body.cabin,
+    });
 
     const savedBooking = await BookingDAO.save(clonedBooking);
     return { message: "Booking Successfully", savedBooking };

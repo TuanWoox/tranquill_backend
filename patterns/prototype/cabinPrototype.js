@@ -1,38 +1,52 @@
-const Cabin = require("../../models/cabin"); // Import the Cabin model
+const Cabin = require("../../models/cabin");
 require("dotenv").config();
+
+const defaultCabin = {
+  name: "Standard Cabin",
+  maxCapacity: 2,
+  regularPrice: 100,
+  discount: 0,
+  description: "A simple, cozy cabin.",
+  image: "default-cabin.jpg",
+};
+
 class CabinPrototype {
   constructor() {
-    // Default Cabin values
-    this.name = "Standard Cabin";
-    this.maxCapacity = 2;
-    this.regularPrice = 100;
-    this.discount = 0;
-    this.description = "A simple, cozy cabin.";
-    this.image = "default-cabin.jpg";
+    this.cabin = defaultCabin;
   }
 
-  // Clone the prototype and modify specific fields
-  clone(
-    newName,
-    newMaxCapacity,
-    newRegularPrice,
-    newDiscount = 0,
-    newDescription = "",
-    newImage = ""
+  concreatePrototype(cabin) {
+    this.cabin = cabin;
+  }
+
+  // Return a raw clone of the prototype
+  clone() {
+    return { ...this.cabin };
+  }
+
+  // Customize the cloned cabin with new values
+  customize(
+    clonedCabin,
+    {
+      name,
+      maxCapacity,
+      regularPrice,
+      discount = 0,
+      description = "",
+      image = "",
+    }
   ) {
-    // Create a new object based on the prototype's properties
-    const clonedCabin = Object.create(this);
+    clonedCabin.name = name || this.cabin.name;
+    clonedCabin.maxCapacity = maxCapacity ?? this.cabin.maxCapacity;
+    clonedCabin.regularPrice = regularPrice ?? this.cabin.regularPrice;
+    clonedCabin.discount = discount;
+    clonedCabin.description = description || this.cabin.description;
+    clonedCabin.image = image || this.cabin.image;
 
-    // Modify properties specific to the new cabin
-    clonedCabin.name = newName || this.name;
-    clonedCabin.maxCapacity = newMaxCapacity || this.maxCapacity;
-    clonedCabin.regularPrice = newRegularPrice || this.regularPrice;
-    clonedCabin.discount = newDiscount || this.discount;
-    clonedCabin.description = newDescription || this.description;
-    clonedCabin.image = newImage || this.image;
-
-    return clonedCabin;
+    return clonedCabin; // Return a Mongoose instance
   }
 }
 
-module.exports = new CabinPrototype(); // Export an instance of the prototype
+const cabinPrototype = new CabinPrototype();
+cabinPrototype.concreatePrototype(defaultCabin);
+module.exports = cabinPrototype;
