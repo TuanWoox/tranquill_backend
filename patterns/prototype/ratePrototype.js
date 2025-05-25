@@ -1,9 +1,9 @@
 class RatePrototype {
   constructor() {
     // Default Rate values
-    this.userID = null; // User ID will be set when creating a new rate
-    this.cabinID = null; // Cabin ID will be set when creating a new rate
-    this.bookingID = null; // Booking ID will be set when creating a new rate
+    this.userId = null; // User Id will be set when creating a new rate
+    this.cabinId = null; // Cabin Id will be set when creating a new rate
+    this.bookingId = null; // Booking Id will be set when creating a new rate
     this.rating = 0; // Default rating value
     this.comment = ""; // Default comment value
   }
@@ -12,9 +12,9 @@ class RatePrototype {
   clone(user, cabin, booking, rating, comment) {
     const clonedRate = Object.create(this);
 
-    clonedRate.userID = user;
-    clonedRate.cabinID = cabin;
-    clonedRate.bookingID = booking;
+    clonedRate.userId = user;
+    clonedRate.cabinId = cabin;
+    clonedRate.bookingId = booking;
     clonedRate.rating = rating;
     clonedRate.comment = comment;
 

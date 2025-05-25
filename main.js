@@ -24,7 +24,7 @@ app.use("/cabin", cabinRoutes);
 app.use("/booking", bookingRoutes);
 app.use("/setting", settingRoutes);
 app.use("/otp", otpRoutes);
-app.use("/rate", rateRoutes);
+app.use("/rating", rateRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {

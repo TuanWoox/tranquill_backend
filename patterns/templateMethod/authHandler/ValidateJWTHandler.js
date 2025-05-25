@@ -1,5 +1,5 @@
 const BaseHandler = require("../baseHandler");
-const UserDAO = require("../../../DAO/SettingDAO");
+const UserDAO = require("../../../DAO/UserDAO");
 const jwt = require("jsonwebtoken");
 
 class ValidateJWTHandler extends BaseHandler {

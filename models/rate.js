@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 
 const rateSchema = new mongoose.Schema(
   {
-    user: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    cabin: {
+    cabinId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cabin",
       required: true,
     },
-    booking: {
+    bookingId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Booking",
       required: true,
