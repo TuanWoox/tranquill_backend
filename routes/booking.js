@@ -5,6 +5,15 @@ const authMiddleware = require("../middleware/authMiddleware");
 router
   .route("/getAllBookings")
   .get(authMiddleware.authenticateToken, bookingController.getAllBookings);
+
+router
+  .route("/getBookingsByCabinId")
+  .get(
+    authMiddleware.authenticateToken,
+    authMiddleware.isAdmin,
+    bookingController.getBookingsWithCabinId
+  );
+
 router
   .route("/deleteBooking")
   .delete(authMiddleware.authenticateToken, bookingController.deleteBooking);

@@ -19,6 +19,18 @@ class BookingDAO {
       throw err;
     }
   }
+  async findBookingByCabinId(cabinId) {
+    try {
+      return Booking.find({
+        cabin: cabinId,
+        status: { $ne: "checked-out" },
+      })
+        .populate("user")
+        .populate("cabin");
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async deleteBookingById(bookingId) {
     try {
@@ -32,7 +44,9 @@ class BookingDAO {
   async findBookingById(bookingId) {
     try {
       const bookingObjectId = new mongoose.Types.ObjectId(bookingId);
-      return Booking.findById(bookingObjectId).populate("cabin");
+      return Booking.findById(bookingObjectId)
+        .populate("cabin")
+        .populate("user");
     } catch (err) {
       throw err;
     }
@@ -45,7 +59,9 @@ class BookingDAO {
         bookingObjectId,
         { $set: updatedData },
         { new: true }
-      ).populate("cabin");
+      )
+        .populate("cabin")
+        .populate("user");
     } catch (err) {
       throw err;
     }
