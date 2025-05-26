@@ -6,14 +6,14 @@ class CreateRateHandler extends BaseHandler {
   async execute(req, res) {
     const { id: userId } = req.user;
     const { bookingId, cabinId, rating, comment } = req.body;
-
-    const clonedRate = await ratePrototype.clone(
+    const raw = ratePrototype.clone();
+    const clonedRate = ratePrototype.customize(raw, {
       userId,
       cabinId,
       bookingId,
       rating,
-      comment
-    );
+      comment,
+    });
     console.log("rate", clonedRate);
 
     const savedRate = await RateDAO.save(clonedRate);

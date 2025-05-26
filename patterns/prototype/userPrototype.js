@@ -1,43 +1,58 @@
-const User = require("../../models/user"); // Import the User model
 const bcrypt = require("bcrypt");
+
+const defaultUser = {
+  fullName: "John Doe",
+  email: "johndoe@example.com",
+  dateOfBirth: new Date("1990-01-01"),
+  phoneNumber: "123-456-7890",
+  nationalId: "AB1234567",
+  password: "password123", // default password (hashed when cloning)
+  role: "user",
+};
 
 class UserPrototype {
   constructor() {
-    // Default User values
-    this.fullName = "John Doe";
-    this.email = "johndoe@example.com";
-    this.dateOfBirth = new Date("1990-01-01");
-    this.phoneNumber = "123-456-7890";
-    this.nationalId = "AB1234567";
-    this.password = "password123"; // Default password (will be hashed later)
-    this.role = "user"; // Default role
+    this.user = { ...defaultUser };
   }
 
-  // Clone the prototype and modify specific fields
-  async clone(
-    newFullName,
-    newEmail,
-    newPassword,
-    newDateOfBirth,
-    newPhoneNumber,
-    newNationalId,
-    newRole = "user"
+  concreatePrototype(user) {
+    this.user = user;
+  }
+
+  // Return a shallow clone of the default user
+  clone() {
+    return { ...this.user };
+  }
+
+  // Customize the cloned user and hash password
+  async customize(
+    clonedUser,
+    {
+      fullName,
+      email,
+      password,
+      dateOfBirth,
+      phoneNumber,
+      nationalId,
+      role = "user",
+    }
   ) {
-    const clonedUser = Object.create(this);
+    clonedUser.fullName = fullName || clonedUser.fullName;
+    clonedUser.email = email || clonedUser.email;
+    clonedUser.dateOfBirth = dateOfBirth || clonedUser.dateOfBirth;
+    clonedUser.phoneNumber = phoneNumber || clonedUser.phoneNumber;
+    clonedUser.nationalId = nationalId || clonedUser.nationalId;
+    clonedUser.role = role || clonedUser.role;
 
-    // Modify properties specific to the new user
-    clonedUser.fullName = newFullName || this.fullName;
-    clonedUser.email = newEmail || this.email;
-    clonedUser.dateOfBirth = newDateOfBirth || this.dateOfBirth;
-    clonedUser.phoneNumber = newPhoneNumber || this.phoneNumber;
-    clonedUser.nationalId = newNationalId || this.nationalId;
-    clonedUser.role = newRole || this.role;
-
-    // Set the password and hash it before saving
-    clonedUser.password = await bcrypt.hash(newPassword || this.password, 10);
+    // Hash the password, if provided; otherwise, hash existing password (default)
+    const rawPassword = password || clonedUser.password;
+    clonedUser.password = await bcrypt.hash(rawPassword, 10);
 
     return clonedUser;
   }
 }
 
-module.exports = new UserPrototype(); // Export an instance of the prototype
+const userPrototype = new UserPrototype();
+userPrototype.concreatePrototype(defaultUser);
+
+module.exports = userPrototype;

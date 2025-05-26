@@ -1,25 +1,38 @@
+const defaultRate = {
+  userId: null, // User Id will be set when creating a new rate
+  cabinId: null, // Cabin Id will be set when creating a new rate
+  bookingId: null, // Booking Id will be set when creating a new rate
+  rating: 0, // Default rating value
+  comment: "", // Default comment value
+};
+
 class RatePrototype {
   constructor() {
-    // Default Rate values
-    this.userId = null; // User Id will be set when creating a new rate
-    this.cabinId = null; // Cabin Id will be set when creating a new rate
-    this.bookingId = null; // Booking Id will be set when creating a new rate
-    this.rating = 0; // Default rating value
-    this.comment = ""; // Default comment value
+    this.rate = { ...defaultRate };
   }
 
-  // Clone the prototype and modify specific fields
-  clone(user, cabin, booking, rating, comment) {
-    const clonedRate = Object.create(this);
+  concreatePrototype(rate) {
+    this.rate = rate;
+  }
 
-    clonedRate.userId = user;
-    clonedRate.cabinId = cabin;
-    clonedRate.bookingId = booking;
-    clonedRate.rating = rating;
-    clonedRate.comment = comment;
+  // Returns a shallow clone of the default rate object
+  clone() {
+    return { ...this.rate };
+  }
+
+  // Customize the cloned rate with new values
+  customize(clonedRate, { userId, cabinId, bookingId, rating, comment }) {
+    clonedRate.userId = userId || clonedRate.userId;
+    clonedRate.cabinId = cabinId || clonedRate.cabinId;
+    clonedRate.bookingId = bookingId || clonedRate.bookingId;
+    clonedRate.rating = rating ?? clonedRate.rating; // rating could be 0, so use nullish coalescing
+    clonedRate.comment = comment || clonedRate.comment;
 
     return clonedRate;
   }
 }
 
-module.exports = new RatePrototype(); // Export an instance of the prototype
+const ratePrototype = new RatePrototype();
+ratePrototype.concreatePrototype(defaultRate);
+
+module.exports = ratePrototype;

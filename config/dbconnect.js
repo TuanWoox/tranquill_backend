@@ -1,9 +1,8 @@
 const database = require("./singletonDatabase");
-const databaseInstance = database.getInstance();
 
 const connectDB = async () => {
   try {
-    await databaseInstance.connect();
+    await database.connect();
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
     process.exit(1);
