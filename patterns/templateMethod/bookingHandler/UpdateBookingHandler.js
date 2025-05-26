@@ -1,15 +1,25 @@
 const BaseHandler = require("../baseHandler");
 const BookingDAO = require("../../../DAO/BookingDAO");
 const SettingDAO = require("../../../DAO/SettingDAO");
-const { updateBookingSchema } = require("../../../joi/validateSchema");
+const {
+  updateBookingSchemaUser,
+  updateStatusBooking,
+} = require("../../../joi/validateSchema");
 
 class UpdateBookingHandler extends BaseHandler {
   async execute(req, res) {
     const { id, role } = req.user;
     const { bookingId, ...updatedData } = req.body.data;
 
-    // Validate input
-    const { error } = updateBookingSchema.validate(
+    let schema;
+    if (role === "admin") {
+      schema = updateStatusBooking;
+    } else {
+      schema = updateBookingSchemaUser;
+    }
+
+    // Validate input based on role
+    const { error } = schema.validate(
       { bookingId, ...updatedData },
       { abortEarly: false }
     );
@@ -27,7 +37,15 @@ class UpdateBookingHandler extends BaseHandler {
       throw err;
     }
 
-    // Check if booking is still editable
+    // Admin: only update status
+    if (role === "admin") {
+      return await BookingDAO.updateBookingById(bookingId, {
+        status: updatedData.status,
+        isPaid: updatedData.isPaid,
+      });
+    }
+
+    // User: ensure booking is still editable
     if (booking.status !== "confirmed") {
       const err = new Error(
         "The booking has been confirmed, you cannot update."
@@ -36,10 +54,8 @@ class UpdateBookingHandler extends BaseHandler {
       throw err;
     }
 
-    // Get breakfast price from settings
+    // Get settings for breakfast price
     const settings = await SettingDAO.getSetting();
-
-    // Recalculate extrasPrice on backend for safety
     const numDates = booking.numDates;
     const extrasPrice = updatedData.hasBreakfast
       ? updatedData.numGuests * settings.breakfastPrice * numDates
@@ -47,7 +63,7 @@ class UpdateBookingHandler extends BaseHandler {
 
     updatedData.extrasPrice = extrasPrice;
 
-    // Update the booking
+    // Update user booking fields
     return await BookingDAO.updateBookingById(bookingId, updatedData);
   }
 }
