@@ -12,7 +12,7 @@ class ChangePasswordHandler extends BaseHandler {
       throw { status: 404, message: "Tài khoản không tồn tại" };
     }
 
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await user.verifyPassword(oldPassword);
     if (!isMatch) {
       throw { status: 400, message: "Mật khẩu hiện tại không đúng" };
     }

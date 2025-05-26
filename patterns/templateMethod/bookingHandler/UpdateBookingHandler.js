@@ -56,15 +56,14 @@ class UpdateBookingHandler extends BaseHandler {
 
     // Get settings for breakfast price
     const settings = await SettingDAO.getSetting();
-    const numDates = booking.numDates;
-    const extrasPrice = updatedData.hasBreakfast
-      ? updatedData.numGuests * settings.breakfastPrice * numDates
-      : 0;
-
-    updatedData.extrasPrice = extrasPrice;
+    const updatedBooking = await BookingDAO.updateBookingById(
+      bookingId,
+      updatedData
+    );
+    updatedBooking.calculateExtrasPrice(settings.breakfastPrice);
 
     // Update user booking fields
-    return await BookingDAO.updateBookingById(bookingId, updatedData);
+    return await BookingDAO.save(updatedBooking);
   }
 }
 

@@ -25,11 +25,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.methods.logIn = async function (password) {
+userSchema.methods.verifyPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
-userSchema.methods.changePassword = async function(newPassword) {
+userSchema.methods.changePassword = async function (newPassword) {
   const saltRounds = parseInt(process.env.ROUND) || 10;
   this.password = await bcrypt.hash(newPassword, saltRounds);
   await this.save();

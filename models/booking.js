@@ -40,4 +40,10 @@ bookingSchema.virtual("totalPrice").get(function () {
   return this.cabinPrice + this.extrasPrice;
 });
 
+bookingSchema.methods.calculateExtrasPrice = (breakfastPrice) => {
+  this.extrasPrice = this.hasBreakfast
+    ? this.numGuests * breakfastPrice * this.numDates
+    : 0;
+};
+
 module.exports = mongoose.model("Booking", bookingSchema);
