@@ -2,7 +2,7 @@ const BaseHandler = require("../baseHandler");
 const BookingDAO = require("../../../DAO/BookingDAO");
 const SettingDAO = require("../../../DAO/SettingDAO");
 const {
-  updateBookingSchemaUser,
+  updateBookingSchema,
   updateStatusBooking,
 } = require("../../../joi/validateSchema");
 
@@ -15,7 +15,7 @@ class UpdateBookingHandler extends BaseHandler {
     if (role === "admin") {
       schema = updateStatusBooking;
     } else {
-      schema = updateBookingSchemaUser;
+      schema = updateBookingSchema;
     }
 
     // Validate input based on role

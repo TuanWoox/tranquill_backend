@@ -47,6 +47,7 @@ module.exports.bookingSchema = Joi.object({
   hasBreakfast: Joi.boolean().required(), // boolean instead of string
   observations: Joi.string().allow("").optional(), // string (optional)
   cabin: Joi.string().required(), // still string (probably an ID)
+  cabinId: Joi.string().required(), // still string (probably an ID)
 }).custom((value, helpers) => {
   const start = new Date(value.startDate);
   const end = new Date(value.endDate);
@@ -101,11 +102,11 @@ module.exports.updateSettingSchema = Joi.object({
 module.exports.rateSchema = Joi.object({
   bookingId: Joi.string().required(),
   cabinId: Joi.string().required(),
-  rating: Joi.string().required(),
+  rating: Joi.number().required(),
   comment: Joi.string().allow("").optional(),
 });
 
 module.exports.rateUpdateSchema = Joi.object({
-  rating: Joi.string().optional(),
+  rating: Joi.number().optional(),
   comment: Joi.string().allow("").optional(),
 });

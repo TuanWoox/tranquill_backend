@@ -5,7 +5,7 @@ class CreateCabinHandler extends BaseHandler {
   async execute(req, res) {
     const { name, maxCapacity, regularPrice, discount, description } = req.body;
     const image = req.file ? req.file.filename : "";
-    const raw = cabinPrototype.clone();
+    const raw = CabinPrototype.clone();
     const newCabin = CabinPrototype.customize(raw, {
       name,
       maxCapacity,

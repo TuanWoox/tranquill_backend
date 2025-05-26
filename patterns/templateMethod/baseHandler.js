@@ -6,6 +6,7 @@ class BaseHandler {
       return res.status(200).json(data);
     } catch (err) {
       const status = err.status || 500;
+      console.error("Error in handler:", err);
       return res
         .status(status)
         .json({ message: err.message || "Internal Server Error" });
