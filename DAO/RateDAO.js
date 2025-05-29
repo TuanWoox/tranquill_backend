@@ -73,7 +73,7 @@ class RateDAO {
         totalRatings,
         individualRatings,
       };
-      console.log(result);
+
       return result;
     } catch (error) {
       throw new Error(
