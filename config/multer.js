@@ -1,10 +1,16 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 // Multer storage settings
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, "../public/uploads/cabins/");
+
+    // Create the directory if it doesn't exist
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
 
     cb(null, uploadPath);
   },
