@@ -1,4 +1,4 @@
-const LoginHandler = require("./LoginHandler");
+const LoginHandler = require("./LogInHandler");
 const SignUpHandler = require("./SignUpHandler");
 const IdentityVerificationHandler = require("./IdentityVerificationHandler");
 const ValidateJWTHandler = require("./ValidateJWTHandler");
