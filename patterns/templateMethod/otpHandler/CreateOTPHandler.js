@@ -10,18 +10,18 @@ class CreateOTPHandler extends BaseHandler {
       const otp = await OTP.generateOTP(email);
       await sendMail(email, otp);
 
-      return { message: "OTP đã được gửi thành công!" };
+      return { message: "OTP has been sent successfully!" };
     } catch (err) {
       if (err.message === "EXISTING_VALID_OTP") {
         throw {
           status: 400,
           message:
-            "Bạn đã có mã OTP, xin vui lòng kiểm tra email hoặc đợi mã hết hạn.",
+            "You already have an OTP. Please check your email or wait for the code to expire.",
         };
       }
 
       console.error("Error creating OTP:", err);
-      throw { status: 500, message: "Lỗi máy chủ, vui lòng thử lại." };
+      throw { status: 500, message: "Server error, please try again." };
     }
   }
 }

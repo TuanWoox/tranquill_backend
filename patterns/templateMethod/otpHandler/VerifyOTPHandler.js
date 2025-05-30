@@ -9,18 +9,18 @@ class VerifyOTPHandler extends BaseHandler {
 
     const foundOTP = await OTPDAO.findByOtp(otp);
     if (!foundOTP) {
-      throw { status: 400, message: "Mã OTP không hợp lệ." };
+      throw { status: 400, message: "Invalid OTP code." };
     }
 
     if (foundOTP.isExpired()) {
-      throw { status: 400, message: "Mã OTP đã hết hạn." };
+      throw { status: 400, message: "OTP code has expired." };
     }
 
     const newOTPToken = generateOTPToken(foundOTP.email);
     await OTPDAO.deleteOTPByEmail(foundOTP.email);
     res.cookie("OTPToken", newOTPToken, COOKIE_OPTIONS.otp);
 
-    return { message: "Xác minh OTP thành công!" };
+    return { message: "OTP verification successful!" };
   }
 }
 
