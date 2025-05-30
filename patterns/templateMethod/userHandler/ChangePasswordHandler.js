@@ -9,16 +9,16 @@ class ChangePasswordHandler extends BaseHandler {
 
     const user = await UserDAO.findById(id);
     if (!user) {
-      throw { status: 404, message: "Tài khoản không tồn tại" };
+      throw { status: 404, message: "The account does not exist" };
     }
 
     const isMatch = await user.verifyPassword(oldPassword);
     if (!isMatch) {
-      throw { status: 400, message: "Mật khẩu hiện tại không đúng" };
+      throw { status: 400, message: "Password does not match" };
     }
 
     await user.changePassword(newPassword);
-    return { message: "Đổi mật khẩu thành công" };
+    return { message: "Changed password successfully" };
   }
 }
 

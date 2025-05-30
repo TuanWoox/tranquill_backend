@@ -6,12 +6,12 @@ class LogInHandler extends BaseHandler {
   async execute(req, res) {
     const foundUser = await UserDAO.findByEmail(req.body.email);
     if (!foundUser || !(await foundUser.verifyPassword(req.body.password))) {
-      throw { status: 401, message: "Thông tin đăng nhập không chính xác" };
+      throw { status: 401, message: "Incorrect login information" };
     }
 
     const token = generateAccessToken(foundUser);
     return {
-      message: "Đăng nhập thành công",
+      message: "Login successful",
       token,
       user: {
         id: foundUser._id,

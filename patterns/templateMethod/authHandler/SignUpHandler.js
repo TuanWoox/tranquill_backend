@@ -17,7 +17,7 @@ class SignUpHandler extends BaseHandler {
     // Check if email already exists
     const existingUser = await UserDAO.findByEmail(value.email);
     if (existingUser) {
-      const err = new Error("Email đã được sử dụng."); // "Email already in use"
+      const err = new Error("Email has been used"); // "Email already in use"
       err.status = 400;
       throw err;
     }
@@ -28,7 +28,7 @@ class SignUpHandler extends BaseHandler {
 
     await UserDAO.save(clonedUser);
 
-    return { message: "Tạo tài khoản thành công" };
+    return { message: "Created account successfully" };
   }
 }
 
